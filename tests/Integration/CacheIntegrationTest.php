@@ -12,7 +12,7 @@ class CacheIntegrationTest extends TestCase
 	public function setUp()
 	{
 		$redis = [
-			'host' => 'redis.docker',
+			'host' => '127.0.0.1',
 			'port' => '6379',
 			'password' => null,
 			'timeout' => 100
