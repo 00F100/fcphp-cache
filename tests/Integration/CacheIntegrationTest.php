@@ -126,7 +126,7 @@ class CacheIntegrationTest extends TestCase
 
 	public function testWithCryptoNonNewDir()
 	{
-		$instance = new Cache(null, 'tests/var/cache', new Crypto(Crypto::getNonce()), 'tsts/var/newdir');
+		$instance = new Cache(null, 'tests/var/cache', new Crypto(Crypto::getNonce()), 'tests/var/newdir');
 		$key = md5(time() . rand());
 		$content = ['data' => 'value'];
 		$ttl = 0;

@@ -160,7 +160,7 @@ class CacheTest extends TestCase
 			->method('decode')
 			->will($this->returnValue(serialize(['data' => 'value'])));
 
-		$instance = new Cache(null, 'tests/var/cache', $cryptoInstance, 'tsts/var/newdir');
+		$instance = new Cache(null, 'tests/var/cache', $cryptoInstance, 'tests/var/newdir');
 		$key = md5(time() . rand());
 		$content = ['data' => 'value'];
 		$ttl = 0;
