@@ -105,14 +105,17 @@ namespace FcPhp\Cache
 		public function get(string $key)
 		{
 			$content = $this->read($key);
-			$content = explode('|', $content);
-			$time = $content[0];
-			$content = $content[1];
-			if($time < time()) {
-				$this->delete($key);
-				return null;
+			if(!empty($content)) {
+				$content = explode('|', $content);
+				$time = $content[0];
+				$content = $content[1];
+				if($time < time()) {
+					$this->delete($key);
+					return null;
+				}
+				return unserialize(base64_decode($content));
 			}
-			return unserialize(base64_decode($content));
+			return null;
 		}
 
 		/**

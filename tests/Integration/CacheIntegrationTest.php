@@ -78,6 +78,11 @@ class CacheIntegrationTest extends TestCase
 		$this->assertTrue($instance->has($key));
 	}
 
+	public function testGetKeyNonExists()
+	{
+		$this->assertTrue(is_null($this->instance->get('abc')));
+	}
+
 	public function testClean()
 	{
 		$this->assertTrue($this->instance->clean() instanceof ICache);
