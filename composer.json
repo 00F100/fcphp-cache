@@ -1,7 +1,7 @@
 {
     "name": "00f100/fcphp-cache",
     "type": "package",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Cache Index for FcPhp",
     "keywords": ["cache", "fcphp", "php7"],
     "homepage": "https://github.com/00f100/fcphp-cache",

@@ -19,9 +19,9 @@ namespace FcPhp\Cache\Facades
 		 *
 		 * @param array $redis Configuration of redis
 		 * @param string $path Path to cache in file
-		 * @return void
+		 * @return FcPhp\Cache\Interfaces\ICache
 		 */
-		public static function getInstance(?array $redis, string $path = null)
+		public static function getInstance(?array $redis, string $path = null) :ICache
 		{
 			if(!self::$instance instanceof ICache) {
 				if(is_array($redis) && isset($redis['host']) && $redis = self::sanitizeRedis($redis)) {

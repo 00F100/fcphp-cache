@@ -12,7 +12,7 @@ class CacheIntegrationTest extends TestCase
 	public function setUp()
 	{
 		$redis = [
-			'host' => '127.0.0.1',
+			'host' => 'redis.docker',
 			'port' => '6379',
 			'password' => null,
 			'timeout' => 100
@@ -27,20 +27,25 @@ class CacheIntegrationTest extends TestCase
 
 	public function testSetGet()
 	{
-		$key = 'cb6e0e439eff1d257641502d8fa65698';
+		$key = md5(microtime() . rand());
 		$content = ['data' => 'value'];
-		$ttl = 84000;
+		$ttl = 10;
 		$this->instance->set($key, $content, $ttl);
 		$this->assertEquals($this->instance->get($key), $content);
 	}
 
 	public function testHas()
 	{
-		$key = 'cb6e0e439eff1d257641502d8fa65698';
+		$key = md5(microtime() . rand());
 		$content = ['data' => 'value'];
-		$ttl = 84000;
+		$ttl = 10;
 		$this->instance->set($key, $content, $ttl);
 		$this->assertTrue($this->instance->has($key));
+	}
+
+	public function testCleanRedis()
+	{
+		$this->assertTrue($this->instance->clean() instanceof ICache);
 	}
 
 	public function testSetGetOld()
@@ -56,7 +61,7 @@ class CacheIntegrationTest extends TestCase
 
 		$key = 'cb6e0e439eff1d257641502d8fa65698';
 		$content = ['data' => 'value'];
-		$ttl = 84000;
+		$ttl = 10;
 		$this->assertTrue($instance->get($key) == null);
 		$instance->delete($key);
 	}
@@ -67,10 +72,14 @@ class CacheIntegrationTest extends TestCase
 		$instance = CacheFacade::getInstance(null, 'tests/var/cache');
 		$key = 'cb6e0e439eff1d257641502d8fa65698';
 		$content = ['data' => 'value'];
-		$ttl = 84000;
+		$ttl = 0;
 		$instance->set($key, $content, $ttl);
 		$this->assertEquals($instance->get($key), $content);
 		$this->assertTrue($instance->has($key));
-		$instance->delete($key);
+	}
+
+	public function testClean()
+	{
+		$this->assertTrue($this->instance->clean() instanceof ICache);
 	}
 }

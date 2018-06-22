@@ -4,9 +4,20 @@ namespace FcPhp\Cache
 {
 	use FcPhp\Cache\Interfaces\ICache;
 	use FcPhp\Redis\Interfaces\IRedis;
+	use FcPhp\Cache\Traits\CacheTrait;
+	use FcPhp\Cache\Traits\CacheFileTrait;
+	use FcPhp\Cache\Traits\CacheRedisTrait;
 
 	class Cache implements ICache
 	{
+		/**
+		 * Const to alias cache in Redis
+		 */
+		const CACHE_REDIS_ALIAS = 'cache::';
+
+		use CacheTrait;
+		use CacheFileTrait;
+		use CacheRedisTrait;
 
 		/**
 		 * @var string
@@ -64,7 +75,7 @@ namespace FcPhp\Cache
 		public function has(string $key) :bool
 		{
 			if($this->isRedis()) {
-				return $this->redis->get($key) ? true : false;
+				return $this->redis->get(self::CACHE_REDIS_ALIAS . $key) ? true : false;
 			}else{
 				return file_exists($this->path . '/' . $key . '.cache');
 			}
@@ -79,7 +90,7 @@ namespace FcPhp\Cache
 		public function delete(string $key) :void
 		{
 			if($this->isRedis()) {
-				$this->redis->delete($key);
+				$this->redis->delete(self::CACHE_REDIS_ALIAS . $key);
 			}else{
 				$this->fdelete($key);
 			}
@@ -105,86 +116,18 @@ namespace FcPhp\Cache
 		}
 
 		/**
-		 * Method to write cache
+		 * Method to clean old caches
 		 *
-		 * @param string $key Key to name cache
-		 * @param mixed $content Content to cache
-		 * @param int $ttl time to live cache
-		 * @return void
+		 * @return FcPhp\Cache\Interfaces\ICache
 		 */
-		private function write(string $key, string $content, int $ttl) :void
-		{
-			$content = time() + $ttl . '|' . base64_encode($content);
-			if($this->isRedis()) {
-				$this->redis->set($key, $content);
-			}else{
-				$this->fmake($key, $content);
-			}
-		}
-
-		/**
-		 * Method to read cache
-		 *
-		 * @param string $key Key to name cache
-		 * @return mixed
-		 */
-		private function read(string $key)
+		public function clean() :ICache
 		{
 			if($this->isRedis()) {
-				return $this->redis->get($key);
+				$this->redisClean();
 			}else{
-				return $this->fread($key);
+				$this->fclean();
 			}
-		}
-
-		/**
-		 * Method to write cache in file
-		 *
-		 * @param string $key Key to name cache
-		 * @param string $content Content to cache
-		 * @return void
-		 */
-		private function fmake(string $key, string $content) :void
-		{
-			$fopen = fopen($this->path . '/' . $key . '.cache', 'w');
-			fwrite($fopen, $content);
-			fclose($fopen);
-		}
-
-		/**
-		 * Method to read cache in file
-		 *
-		 * @param string $key Key to name cache
-		 * @return mixed
-		 */
-		private function fread(string $key)
-		{
-			$file = $this->path . '/' . $key . '.cache';
-			return $this->has($key) ? file_get_contents($file) : null;
-		}
-
-		/**
-		 * Method to delete cache in file
-		 *
-		 * @param string $key Key to name cache
-		 * @return void
-		 */
-		private function fdelete(string $key) :void
-		{
-			$file = $this->path . '/' . $key . '.cache';
-			if($this->has($key)) {
-				unlink($file);
-			}
-		}
-
-		/**
-		 * Method to verify if Cache use Redis
-		 *
-		 * @return bool
-		 */
-		private function isRedis()
-		{
-			return $this->strategy == 'redis';
+			return $this;
 		}
 	}
 }
