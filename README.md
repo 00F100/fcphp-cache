@@ -59,19 +59,19 @@ $redis = [
 	'password' => null,
 	'timeout' => 100,
 ];
-$cache = CacheFacade::getInstance($redis, Crypto::getNonce());
+$cache = CacheFacade::getInstance($redis, Crypto::getNonce(), 'path/to/keys');
 
 /*
 	To use with file
 	=========================
 */
-$cache = CacheFacade::getInstance('path/to/dir');
+$cache = CacheFacade::getInstance('path/to/cache');
 
 /*
 	To use with file and crypto
 	=========================
 */
-$cache = CacheFacade::getInstance('path/to/dir', Crypto::getNonce());
+$cache = CacheFacade::getInstance('path/to/cache', Crypto::getNonce(), 'path/to/keys');
 
 /**
  * Method to create new cache
