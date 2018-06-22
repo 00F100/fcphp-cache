@@ -2,8 +2,9 @@
 
 use FcPhp\Cache\Cache;
 use FcPhp\Cache\Interfaces\ICache;
-use PHPUnit\Framework\TestCase;
 use FcPhp\Cache\Facades\CacheFacade;
+use FcPhp\Crypto\Crypto;
+use PHPUnit\Framework\TestCase;
 
 class CacheIntegrationTest extends TestCase
 {
@@ -12,12 +13,12 @@ class CacheIntegrationTest extends TestCase
 	public function setUp()
 	{
 		$redis = [
-			'host' => 'redis.docker',
+			'host' => '127.0.0.1',
 			'port' => '6379',
 			'password' => null,
 			'timeout' => 100
 		];
-		$this->instance = CacheFacade::getInstance($redis, null);
+		$this->instance = CacheFacade::getInstance($redis, Crypto::getNonce(), 'tests/var/keys');
 	}
 
 	public function testInstance()
@@ -27,7 +28,7 @@ class CacheIntegrationTest extends TestCase
 
 	public function testSetGet()
 	{
-		$key = md5(microtime() . rand());
+		$key = 'cb6e0e439eff1d257641502d8fa65698';
 		$content = ['data' => 'value'];
 		$ttl = 10;
 		$this->instance->set($key, $content, $ttl);
@@ -36,7 +37,7 @@ class CacheIntegrationTest extends TestCase
 
 	public function testHas()
 	{
-		$key = md5(microtime() . rand());
+		$key = 'cb6e0e439eff1d257641502d8fa65698';
 		$content = ['data' => 'value'];
 		$ttl = 10;
 		$this->instance->set($key, $content, $ttl);
@@ -69,13 +70,27 @@ class CacheIntegrationTest extends TestCase
 	public function testSetGetFile()
 	{
 		CacheFacade::reset();
-		$instance = CacheFacade::getInstance(null, 'tests/var/cache');
+		$instance = CacheFacade::getInstance('tests/var/cache');
 		$key = 'cb6e0e439eff1d257641502d8fa65698';
 		$content = ['data' => 'value'];
 		$ttl = 0;
 		$instance->set($key, $content, $ttl);
 		$this->assertEquals($instance->get($key), $content);
 		$this->assertTrue($instance->has($key));
+		$instance->clean();
+	}
+
+	public function testSetGetFileDelete()
+	{
+		CacheFacade::reset();
+		$instance = CacheFacade::getInstance('tests/var/cache');
+		$key = 'cb6e0e439eff1d257641502d8fa65698';
+		$content = ['data' => 'value'];
+		$ttl = 0;
+		$instance->set($key, $content, $ttl);
+		$this->assertEquals($instance->get($key), $content);
+		$this->assertTrue($instance->has($key));
+		$instance->delete($key);
 	}
 
 	public function testGetKeyNonExists()
@@ -86,5 +101,49 @@ class CacheIntegrationTest extends TestCase
 	public function testClean()
 	{
 		$this->assertTrue($this->instance->clean() instanceof ICache);
+	}
+
+	/**
+     * @expectedException FcPhp\Cache\Exceptions\PathKeyNotFoundException
+     */
+	public function testWithCryptoNonPath()
+	{
+		$instance = new Cache(null, 'tests/var/cache', new Crypto(Crypto::getNonce()));
+	}
+
+	/**
+	 * @expectedException FcPhp\Cache\Exceptions\PathNotPermissionFoundException
+	 */
+	public function testWithCryptoNonPermissionPath()
+	{
+		$instance = new Cache(null, 'tests/var/cache', new Crypto(Crypto::getNonce()), '/root/dir');
+		$key = 'cb6e0e439eff1d257641502d8fa65698';
+		$content = ['data' => 'value'];
+		$ttl = 0;
+		$instance->set($key, $content, $ttl);
+		$this->assertEquals($instance->get($key), $content);
+	}
+
+	public function testWithCryptoNonNewDir()
+	{
+		$instance = new Cache(null, 'tests/var/cache', new Crypto(Crypto::getNonce()), 'tsts/var/newdir');
+		$key = md5(time() . rand());
+		$content = ['data' => 'value'];
+		$ttl = 0;
+		$instance->set($key, $content, $ttl);
+		$this->assertEquals($instance->get($key), $content);
+		$instance->delete($key);
+	}
+
+	/**
+	 * @expectedException FcPhp\Cache\Exceptions\PathNotPermissionFoundException
+	 */
+	public function testDirCacheNonPermission()
+	{
+		$instance = new Cache(null, '/root/dir');
+		$key = md5(time() . rand());
+		$content = ['data' => 'value'];
+		$ttl = 0;
+		$instance->set($key, $content, $ttl);
 	}
 }

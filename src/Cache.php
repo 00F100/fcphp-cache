@@ -7,6 +7,8 @@ namespace FcPhp\Cache
 	use FcPhp\Cache\Traits\CacheTrait;
 	use FcPhp\Cache\Traits\CacheFileTrait;
 	use FcPhp\Cache\Traits\CacheRedisTrait;
+	use FcPhp\Crypto\Interfaces\ICrypto;
+	use FcPhp\Cache\Exceptions\PathKeyNotFoundException;
 
 	class Cache implements ICache
 	{
@@ -14,6 +16,8 @@ namespace FcPhp\Cache
 		 * Const to alias cache in Redis
 		 */
 		const CACHE_REDIS_ALIAS = 'cache::';
+
+		const CACHE_KEY_ALIAS = 'key::';
 
 		use CacheTrait;
 		use CacheFileTrait;
@@ -35,19 +39,36 @@ namespace FcPhp\Cache
 		private $path = null;
 
 		/**
+		 * @var FcPhp\Crypto\Interfaces\ICrypto
+		 */
+		private $crypto = null;
+
+		/**
+		 * @var string
+		 */
+		private $pathKeys = null;
+
+		/**
 		 * Method to construct new instance of Cache
 		 *
 		 * @param FcPhp\Redis\Interfaces\IRedis $redis Redis instance
 		 * @param string $path Path to cache in file
 		 * @return void
 		 */
-		public function __construct(?IRedis $redis, string $path = null)
+		public function __construct(?IRedis $redis = null, string $path = null, ?ICrypto $crypto = null, string $pathKeys = null)
 		{
 			if($redis instanceof IRedis) {
 				$this->redis = $redis;
 			}else{
 				$this->path = $path;
 				$this->strategy = 'path';
+			}
+			if($crypto instanceof ICrypto) {
+				$this->crypto = $crypto;
+				if(empty($pathKeys)) {
+					throw new PathKeyNotFoundException();
+				}
+				$this->pathKeys = $pathKeys;
 			}
 		}
 
@@ -109,11 +130,12 @@ namespace FcPhp\Cache
 				$content = explode('|', $content);
 				$time = $content[0];
 				$content = $content[1];
+				$content = $this->unprocessContent($key, $content);
 				if($time < time()) {
 					$this->delete($key);
 					return null;
 				}
-				return unserialize(base64_decode($content));
+				return unserialize($content);
 			}
 			return null;
 		}

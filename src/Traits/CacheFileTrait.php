@@ -2,6 +2,9 @@
 
 namespace FcPhp\Cache\Traits
 {
+	use Exception;
+	use FcPhp\Cache\Exceptions\PathNotPermissionFoundException;
+
 	trait CacheFileTrait
 	{
 		/**
@@ -13,6 +16,13 @@ namespace FcPhp\Cache\Traits
 		 */
 		private function fmake(string $key, string $content) :void
 		{
+			if(!is_dir($this->path)) {
+				try {
+					mkdir($this->path, 0755, true);
+				} catch (Exception $e) {
+					throw new PathNotPermissionFoundException($this->path, 500, $e);
+				}
+			}
 			$fopen = fopen($this->path . '/' . $key . '.cache', 'w');
 			fwrite($fopen, $content);
 			fclose($fopen);

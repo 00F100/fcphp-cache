@@ -30,11 +30,10 @@ use FcPhp\Cache\Facades\CacheFacade;
 /**
  * Method to create new instance of Cache
  *
- * @param array $redis Configuration of redis
- * @param string $path Path to cache in file
+ * @param string|array $cacheRepository Configuration of redis or path to save files cache
  * @return FcPhp\Cache\Interfaces\ICache
  */
-$cache = CacheFacade::getInstance(?array $redis, string $path = null);
+$cache = CacheFacade::getInstance(string|array $cacheRepository);
 
 /*
 	To use with Redis
@@ -47,13 +46,13 @@ $redis = [
 	'password' => null,
 	'timeout' => 100,
 ];
-$cache = CacheFacade::getInstance($redis, null);
+$cache = CacheFacade::getInstance($redis);
 
 /*
 	To use with file
 	=========================
 */
-$cache = CacheFacade::getInstance(null, 'path/to/dir');
+$cache = CacheFacade::getInstance('path/to/dir');
 
 /**
  * Method to create new cache

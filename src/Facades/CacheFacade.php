@@ -5,6 +5,7 @@ namespace FcPhp\Cache\Facades
 	use FcPhp\Cache\Cache;
 	use FcPhp\Cache\Interfaces\ICache;
 	use FcPhp\Redis\Facades\RedisFacade;
+	use FcPhp\Crypto\Crypto;
 
 	class CacheFacade
 	{
@@ -17,17 +18,17 @@ namespace FcPhp\Cache\Facades
 		/**
 		 * Method to create new instance of Cache
 		 *
-		 * @param array $redis Configuration of redis
-		 * @param string $path Path to cache in file
+		 * @param string|array $cacheRepository Configuration of redis or path of dir to cache files
 		 * @return FcPhp\Cache\Interfaces\ICache
 		 */
-		public static function getInstance(?array $redis, string $path = null) :ICache
+		public static function getInstance($cacheRepository, string $nonce = null, string $pathKeys = null) :ICache
 		{
 			if(!self::$instance instanceof ICache) {
-				if(is_array($redis) && isset($redis['host']) && $redis = self::sanitizeRedis($redis)) {
-					self::$instance = new Cache(RedisFacade::getInstance($redis['host'], $redis['port'], $redis['password'], $redis['timeout']), null);
+				$crypto =  (!empty($nonce) ? new Crypto($nonce) : null);
+				if(is_array($cacheRepository) && isset($cacheRepository['host']) && $redis = self::sanitizeRedis($cacheRepository)) {
+					self::$instance = new Cache(RedisFacade::getInstance($redis['host'], $redis['port'], $redis['password'], $redis['timeout']), null, $crypto, $pathKeys);
 				}else{
-					self::$instance = new Cache(null, $path);
+					self::$instance = new Cache(null, $cacheRepository, $crypto, $pathKeys);
 				}
 			}
 			return self::$instance;

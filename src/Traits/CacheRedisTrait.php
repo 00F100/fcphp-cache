@@ -22,13 +22,15 @@ namespace FcPhp\Cache\Traits
 		private function redisClean() :void
 		{
 			$list = $this->redis->keys('*');
-			foreach($list as $key) {
-				if(substr($key, 0, strlen(self::CACHE_REDIS_ALIAS)) == self::CACHE_REDIS_ALIAS) {
-					$content = $this->redis->get($key);
-					$content = explode('|', $content);
-					$time = current($content);
-					if($time < time()) {
-						$this->delete($key);
+			if(is_array($list)) {
+				foreach($list as $key) {
+					if(substr($key, 0, strlen(self::CACHE_REDIS_ALIAS)) == self::CACHE_REDIS_ALIAS) {
+						$content = $this->redis->get($key);
+						$content = explode('|', $content);
+						$time = current($content);
+						if($time < time()) {
+							$this->delete($key);
+						}
 					}
 				}
 			}
