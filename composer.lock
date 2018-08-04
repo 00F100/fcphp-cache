@@ -4,23 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b60b3177684b37e2ee829eec1f7bef6",
+    "content-hash": "d161e08dad9b22befe8bb8434ca0c17f",
     "packages": [
         {
             "name": "00f100/fcphp-crypto",
-            "version": "0.1.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/00F100/fcphp-crypto.git",
-                "reference": "2f71e4ad07402dd9aa6cae613c83b1705d683d82"
+                "reference": "f8d8d8c77a3aaeef8f58e691a96ee7d1d6f6fca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/00F100/fcphp-crypto/zipball/2f71e4ad07402dd9aa6cae613c83b1705d683d82",
-                "reference": "2f71e4ad07402dd9aa6cae613c83b1705d683d82",
+                "url": "https://api.github.com/repos/00F100/fcphp-crypto/zipball/f8d8d8c77a3aaeef8f58e691a96ee7d1d6f6fca0",
+                "reference": "f8d8d8c77a3aaeef8f58e691a96ee7d1d6f6fca0",
                 "shasum": ""
             },
             "require": {
+                "ext-sodium": "*",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -50,20 +51,20 @@
                 "fcphp",
                 "php"
             ],
-            "time": "2018-06-17T01:36:28+00:00"
+            "time": "2018-08-04T18:54:53+00:00"
         },
         {
             "name": "00f100/fcphp-redis",
-            "version": "0.4.1",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/00F100/fcphp-redis.git",
-                "reference": "edbe01d499844cee526fd33230b75ad917fc006e"
+                "reference": "7c7caf7f1fc987559b64aa001a75ac377121c0e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/00F100/fcphp-redis/zipball/edbe01d499844cee526fd33230b75ad917fc006e",
-                "reference": "edbe01d499844cee526fd33230b75ad917fc006e",
+                "url": "https://api.github.com/repos/00F100/fcphp-redis/zipball/7c7caf7f1fc987559b64aa001a75ac377121c0e7",
+                "reference": "7c7caf7f1fc987559b64aa001a75ac377121c0e7",
                 "shasum": ""
             },
             "require": {
@@ -96,22 +97,22 @@
                 "fcphp",
                 "redis"
             ],
-            "time": "2018-06-22T04:45:44+00:00"
+            "time": "2018-08-04T15:51:49+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "00f100/phpdbug",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/00F100/phpdbug.git",
-                "reference": "ffe174fb589e1d7d7f7043d6150b4759adce2b6d"
+                "reference": "9b71fa48f5e90847bda20138be0c3ad77f86862f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/00F100/phpdbug/zipball/ffe174fb589e1d7d7f7043d6150b4759adce2b6d",
-                "reference": "ffe174fb589e1d7d7f7043d6150b4759adce2b6d",
+                "url": "https://api.github.com/repos/00F100/phpdbug/zipball/9b71fa48f5e90847bda20138be0c3ad77f86862f",
+                "reference": "9b71fa48f5e90847bda20138be0c3ad77f86862f",
                 "shasum": ""
             },
             "type": "package",
@@ -137,7 +138,7 @@
                 "denbug",
                 "php"
             ],
-            "time": "2017-07-27T14:09:24+00:00"
+            "time": "2018-06-22T15:19:31+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -809,16 +810,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.5.8",
+            "version": "6.5.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4f21a3c6b97c42952fd5c2837bb354ec0199b97b"
+                "reference": "5744955af9c0a2de74a5eb5287c50bf025100d39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4f21a3c6b97c42952fd5c2837bb354ec0199b97b",
-                "reference": "4f21a3c6b97c42952fd5c2837bb354ec0199b97b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5744955af9c0a2de74a5eb5287c50bf025100d39",
+                "reference": "5744955af9c0a2de74a5eb5287c50bf025100d39",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +837,7 @@
                 "phpunit/php-file-iterator": "^1.4.3",
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-timer": "^1.0.9",
-                "phpunit/phpunit-mock-objects": "^5.0.5",
+                "phpunit/phpunit-mock-objects": "^5.0.8",
                 "sebastian/comparator": "^2.1",
                 "sebastian/diff": "^2.0",
                 "sebastian/environment": "^3.1",
@@ -889,20 +890,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-10T11:38:34+00:00"
+            "time": "2018-08-03T05:27:14+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "5.0.7",
+            "version": "5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce"
+                "reference": "6f9a3c8bf34188a2b53ce2ae7a126089c53e0a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
-                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/6f9a3c8bf34188a2b53ce2ae7a126089c53e0a9f",
+                "reference": "6f9a3c8bf34188a2b53ce2ae7a126089c53e0a9f",
                 "shasum": ""
             },
             "require": {
@@ -948,7 +949,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-05-29T13:50:43+00:00"
+            "time": "2018-07-13T03:27:23+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
