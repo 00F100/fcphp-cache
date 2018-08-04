@@ -1,7 +1,7 @@
 {
     "name": "00f100/fcphp-cache",
     "type": "package",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "Cache Index for FcPhp",
     "keywords": ["cache", "fcphp", "php7", "php72", "crypto", "redis"],
     "homepage": "https://github.com/00f100/fcphp-cache",

@@ -2,10 +2,10 @@
 
 namespace FcPhp\Cache\Exceptions
 {
-	use Exception;
+    use Exception;
 
-	class PathNotPermissionFoundException extends Exception
-	{
-		
-	}
+    class PathNotPermissionFoundException extends Exception
+    {
+        
+    }
 }

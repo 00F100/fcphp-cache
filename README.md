@@ -14,9 +14,9 @@ $ composer require 00f100/fcphp-cache
 or add in composer.json
 ```json
 {
-	"require": {
-		"00f100/fcphp-cache": "*"
-	}
+    "require": {
+        "00f100/fcphp-cache": "*"
+    }
 }
 ```
 
@@ -39,37 +39,37 @@ use FcPhp\Crypto\Crypto;
 $cache = CacheFacade::getInstance(string|array $cacheRepository, string $nonce = null, string $pathKeys = null);
 
 /*
-	To use with Redis
-	=========================
+    To use with Redis
+    =========================
 */
 $redis = [
-	'host' => '127.0.0.1',
-	'port' => '6379',
-	'password' => null,
-	'timeout' => 100,
+    'host' => '127.0.0.1',
+    'port' => '6379',
+    'password' => null,
+    'timeout' => 100,
 ];
 $cache = CacheFacade::getInstance($redis);
 /*
-	To use with Redis and crypto
-	=========================
+    To use with Redis and crypto
+    =========================
 */
 $redis = [
-	'host' => '127.0.0.1',
-	'port' => '6379',
-	'password' => null,
-	'timeout' => 100,
+    'host' => '127.0.0.1',
+    'port' => '6379',
+    'password' => null,
+    'timeout' => 100,
 ];
 $cache = CacheFacade::getInstance($redis, Crypto::getNonce(), 'path/to/keys');
 
 /*
-	To use with file
-	=========================
+    To use with file
+    =========================
 */
 $cache = CacheFacade::getInstance('path/to/cache');
 
 /*
-	To use with file and crypto
-	=========================
+    To use with file and crypto
+    =========================
 */
 $cache = CacheFacade::getInstance('path/to/cache', Crypto::getNonce(), 'path/to/keys');
 
